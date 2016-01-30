@@ -1,0 +1,134 @@
+import java.util.*;
+import java.lang.Throwable;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.File;
+
+
+public class TextBuddy {
+	private static final String MESSAGE_WELCOME = "Welcome to textbuddy. %1$s is ready for use \ncommand:";
+	private static final String MESSAGE_STRING_ADDED = "added to %1s: \"%2s\"";
+	private static final String MESSAGE_DELETED = "deleted from %1s: \"%2s\"";
+	private static final String MESSAGE_EMPTY_FILE = "%1s is empty";
+	private static final String MESSAGE_RETRIEVE_RECORD = "%1s.%2s\n";
+	private static final String MESSAGE_CLEAR_CONTENTS = "all content deleted from %1s";
+	private static final String MESSAGE_OUT_OF_BOUNDS = "Out of bounds.";
+	private static final String MESSAGE_WRONG_EXTENSION = "Wrong extension.";
+	private static final String MESSAGE_WRONG_FILE_TYPE = "No .txt file provided";
+	
+	static ArrayList<String> textRecord = new ArrayList<String>();
+	private String fileName;
+	private Scanner systemInput;	
+
+	
+	public static void main(String[] args) throws Exception {
+		String fileName = formatParams(args);
+		TextBuddy textBuddyHelper = new TextBuddy(fileName);
+		
+		
+		System.out.println(String.format(MESSAGE_WELCOME, file_name));	
+		
+		//scan user input until exit
+		String userCommand = null;
+		
+		do {
+			userCommand = systemInput.nextLine();
+			String[] userInput = userCommand.split("\\s+");
+			
+			if (userCommand.startsWith("add")) {
+				String addedString = "";
+				for (int i = 1; i < userInput.length; i++ ) {
+					addedString += userInput[i];
+					if(i!=userInput.length-1) addedString += " ";
+				}
+				addText(addedString);
+			}
+			
+			else if(userCommand.startsWith("delete")) {
+				deleteLine(userInput);
+			}
+			else if(userCommand.startsWith("display")) {
+				displayFile();
+			}
+			else if(userCommand.startsWith("clear")) {
+				clearFile();
+			}
+			else if(userCommand.equals("exit")) {
+				exitProgram();
+			}
+			
+			saveContents();
+			
+		}while(!userCommand.startsWith("exit"));
+	}
+		
+	public static String formatParams(String[] args) throws Exception {
+		if(args.length == 1) {
+			if(args[0].endsWith(".txt")) {
+				return args[0];
+			}
+			else {
+				throw new Exception(MESSAGE_WRONG_EXTENSION);
+			}
+		}else {
+			throw new Exception(MESSAGE_WRONG_FILE_TYPE);
+		}
+	}
+	
+	public void addText(String addedString) {		
+		textRecord.add(addedString);
+		System.out.println(String.format(MESSAGE_STRING_ADDED, fileName, addedString));
+	}
+	
+	public static void deleteLine(String[] userInput) {
+		int index = Integer.parseInt(userInput[1]);
+		if(index<1||index>textRecord.size()) {
+			System.out.println(MESSAGE_OUT_OF_BOUNDS);
+		}else {
+			String targetLine = textRecord.get(index-1);
+			System.out.println(String.format(MESSAGE_DELETED, file_name, targetLine));
+			textRecord.remove(index-1);
+		}			
+	}
+	
+	public static void displayFile() {
+		if (textRecord.size()==0) {
+			System.out.println(String.format(MESSAGE_EMPTY_FILE, file_name));
+
+		}
+		
+		for(int i = 0; i < textRecord.size(); i++) {
+			int itemNumber = i+1; 
+			String itemContents = textRecord.get(i);
+
+			System.out.println(String.format(MESSAGE_RETRIEVE_RECORD, itemNumber, itemContents));
+		}
+	}
+	
+	public void clearFile() {	
+		textRecord.clear();
+		System.out.println(String.format(MESSAGE_CLEAR_CONTENTS, fileName));
+	}
+	
+	public void exitProgram() {
+		systemInput.close();
+	}
+	
+	public TextBuddy(String fileName) {
+		this.fileName = fileName;
+		this.systemInput = new Scanner(System.in);
+	}
+	
+	private void saveContents() {
+		try(PrintWriter writer = new PrintWriter(fileName, "UTF-8")) {
+			for(String record : textRecord) {
+				writer.println(record);
+			}
+		}
+		catch(IOException err) {
+	        System.out.println("no");
+	      }
+		}
+		//writer.close();
+	}
+
