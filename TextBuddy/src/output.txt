@@ -1,0 +1,42 @@
+Welcome to textbuddy. oishi.txt is ready for use 
+command:
+added to oishi.txt: "abc"
+added to oishi.txt: "123"
+added to oishi.txt: "hello world"
+deleted from oishi.txt: "abc"
+out of bounds
+1.123
+
+2.hello world
+
+all content deleted from oishi.txt
+added to oishi.txt: "merry christmas"
+invalid arguments
+deleted from oishi.txt: "merry christmas"
+added to oishi.txt: " a"
+added to oishi.txt: " b"
+added to oishi.txt: " c"
+added to oishi.txt: " d"
+added to oishi.txt: "  "
+1. a
+
+2. b
+
+3. c
+
+4. d
+
+5.  
+
+deleted from oishi.txt: " d"
+1. a
+
+2. b
+
+3. c
+
+4.  
+
+all content deleted from oishi.txt
+out of bounds
+invalid arguments

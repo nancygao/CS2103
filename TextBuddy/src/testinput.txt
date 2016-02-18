@@ -1,0 +1,23 @@
+add abc
+add 123
+add hello world
+delete 1
+delete 0
+display
+clear
+add merry christmas
+delete 
+delete 1
+add a
+add b
+add c
+add d
+add 
+display
+delete 4
+display
+clear
+delete -1
+delete 
+exit 
+
