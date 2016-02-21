@@ -29,20 +29,24 @@ public class TextBuddy {
 	private static final String MESSAGE_OUT_OF_BOUNDS = "out of bounds";
 	private static final String MESSAGE_WRONG_FILE_TYPE = "wrong file type provided";
 	
-	private ArrayList<String> textRecords;
 	private String fileName;
-	private Scanner systemInput;	
-	private File savedFile;
 	private String userCommand;
 	
+	private ArrayList<String> textRecords;
+
+	private Scanner systemInput;	
+	
+	private File savedFile;
+	
 	public static void main(String[] args) throws Exception {
-		String fileName = formatParams(args);
+		String fileName = checkParams(args);
 		TextBuddy textBuddyHelper = new TextBuddy(fileName);
 		textBuddyHelper.printWelcomeMessage(fileName);
 		textBuddyHelper.restoreExistingFile();
 		textBuddyHelper.readCommand();
 	}
 	
+	//Constructor instantiates TextBuddy class and creates new ArrayList and File
 	public TextBuddy(String fileName) {
 		this.fileName = fileName;
 		this.systemInput = new Scanner(System.in);
@@ -54,7 +58,8 @@ public class TextBuddy {
 		System.out.print(String.format(MESSAGE_WELCOME, fileName));	
 	}
 	
-	public static String formatParams(String[] args) throws UnsupportedOperationException {
+	//checkParams method verifies that the input file is type .txt and has correct number of arguments
+	public static String checkParams(String[] args) throws UnsupportedOperationException {
 		if (args.length == 1 && args[0].endsWith(".txt")) {
 			return args[0];
 		} else {
@@ -62,6 +67,8 @@ public class TextBuddy {
 		}
 	}
 	
+	//restoreExistingFile method restores a file from memory if it already exists
+	//else, it creates a new file
 	public void restoreExistingFile() throws IOException {
 		if (savedFile.exists()) {
 			try (BufferedReader reader = new BufferedReader (new FileReader(savedFile))) {
@@ -73,7 +80,8 @@ public class TextBuddy {
 			savedFile.createNewFile();
 		}
 	}
-
+	
+	//readCommand method checks what command the user entered and calls the appropriate helper methods 
 	public void readCommand() throws IOException {		
 		do { 
 			userCommand = systemInput.nextLine();
@@ -148,6 +156,7 @@ public class TextBuddy {
 		systemInput.close();
 	}
 	
+	//saveContents method saves the data after each user action  
 	public void saveContents() throws IOException {
 		try (PrintWriter writer = new PrintWriter(fileName, "UTF-8")) {
 			for(String record : textRecords) {
