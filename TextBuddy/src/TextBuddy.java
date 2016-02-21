@@ -12,6 +12,7 @@
 	
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Collections;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.File;
@@ -28,6 +29,10 @@ public class TextBuddy {
 	private static final String MESSAGE_CLEAR_CONTENTS = "all content deleted from %1s";
 	private static final String MESSAGE_OUT_OF_BOUNDS = "out of bounds";
 	private static final String MESSAGE_WRONG_FILE_TYPE = "wrong file type provided";
+	private static final String MESSAGE_FILE_SORTED = "%1s was sorted correctly";
+	private static final String MESSAGE_FILE_NOT_SORTED = "%1s was not sorted correctly";
+
+
 	
 	private String fileName;
 	private String userCommand;
@@ -97,11 +102,22 @@ public class TextBuddy {
 				clearFile();
 			} else if (userCommand.startsWith("exit")) {
 				exitProgram();
+			} else if (userCommand.startsWith("sort")) {
+				sortAlphabetically();
 			} 
 		
 			saveContents();
 			
 		} while(!userCommand.startsWith("exit"));	
+	}
+	
+	public void sortAlphabetically() {
+		if (textRecords.size() > 0){
+			Collections.sort(textRecords);
+			System.out.println(String.format(MESSAGE_FILE_SORTED, fileName));
+		} else { 
+			System.out.println(String.format(MESSAGE_FILE_NOT_SORTED, fileName));
+		}		
 	}
 	
 	public void addText(String [] userInput) {	
