@@ -31,7 +31,8 @@ public class TextBuddy {
 	private static final String MESSAGE_WRONG_FILE_TYPE = "wrong file type provided";
 	private static final String MESSAGE_FILE_SORTED = "%1s was sorted correctly";
 	private static final String MESSAGE_FILE_NOT_SORTED = "%1s was not sorted correctly";
-
+	private static final String MESSAGE_STRINGS_FOUND = "%1s. %2s\n";
+	private static final String MESSAGE_NONE_FOUND = "no strings were found";
 
 	
 	private String fileName;
@@ -104,11 +105,38 @@ public class TextBuddy {
 				exitProgram();
 			} else if (userCommand.startsWith("sort")) {
 				sortAlphabetically();
+			} else if (userCommand.startsWith("search")) {
+				searchLinesContaining(userInput);
 			} 
 		
 			saveContents();
 			
 		} while(!userCommand.startsWith("exit"));	
+	}
+	
+	public void searchLinesContaining(String[] userInput) {
+		String searchedString = parseInputString(userInput);
+		ArrayList<Integer> linesWithSearchedString = new ArrayList<Integer>();
+
+		for (int i=0; i<textRecords.size(); i++) { 
+			String currentLineTested = textRecords.get(i);
+			if (currentLineTested.contains(searchedString)) {
+				linesWithSearchedString.add(i+1);
+			}
+		}
+		printSearchedStringLines(linesWithSearchedString, searchedString);
+	}
+	
+	private void printSearchedStringLines(ArrayList<Integer> linesWithSearchedString, String searchedString ) {
+		if (linesWithSearchedString.size() > 0) {
+			
+			for (int i : linesWithSearchedString) {
+				System.out.println(String.format(MESSAGE_STRINGS_FOUND, i, textRecords.get(i-1)));
+				//System.out.println(i + ". " + textRecords.get(i-1) + "\n");
+			}
+		} else {
+			System.out.println(MESSAGE_NONE_FOUND);
+		}
 	}
 	
 	public void sortAlphabetically() {
@@ -121,15 +149,21 @@ public class TextBuddy {
 	}
 	
 	public void addText(String [] userInput) {	
-		String addedString = "";
-		for (int i = 1; i < userInput.length; i++) {
-			addedString += userInput[i];
-			if (i != userInput.length-1) {
-				addedString += " ";
-			}
-		}
+		String addedString = parseInputString(userInput);
 		textRecords.add(addedString);
 		System.out.println(String.format(MESSAGE_STRING_ADDED, fileName, addedString));
+	}
+	
+	//Parses user input from String[] to String for 
+	private String parseInputString(String[] userInput){
+		String parsedString = "";
+		for (int i = 1; i < userInput.length; i++) {
+			parsedString += userInput[i];
+			if (i != userInput.length-1) {
+				parsedString += " ";
+			}
+		}
+		return parsedString;
 	}
 	
 	public void deleteLine(String[] userInput, String fileName) throws NumberFormatException {	
