@@ -132,7 +132,6 @@ public class TextBuddy {
 			
 			for (int i : linesWithSearchedString) {
 				System.out.println(String.format(MESSAGE_STRINGS_FOUND, i, textRecords.get(i-1)));
-				//System.out.println(i + ". " + textRecords.get(i-1) + "\n");
 			}
 		} else {
 			System.out.println(MESSAGE_NONE_FOUND);
@@ -148,7 +147,7 @@ public class TextBuddy {
 		}		
 	}
 	
-	public void addText(String [] userInput) {	
+	public void addText(String[] userInput) {	
 		String addedString = parseInputString(userInput);
 		textRecords.add(addedString);
 		System.out.println(String.format(MESSAGE_STRING_ADDED, fileName, addedString));
@@ -172,6 +171,7 @@ public class TextBuddy {
 		} else {
 			try { 
 				int index = Integer.parseInt(userInput[1]);
+				
 				if (index < 1 || index>textRecords.size()) {
 					System.out.println(MESSAGE_OUT_OF_BOUNDS);
 				} else {
